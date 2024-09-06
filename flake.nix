@@ -54,6 +54,7 @@
     nixosConfigurations = {
       cornflake = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
+        system = "x86_64-linux";
         modules = [
           # > Our main nixos configuration file <
           ./nixos/configuration.nix

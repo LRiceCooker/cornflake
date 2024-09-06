@@ -5,7 +5,7 @@
     ./bitwarden
     ./brave
     ./discord
-    ./mincraft
+    ./minecraft
     ./steam
   ];
 }

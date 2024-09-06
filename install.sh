@@ -2,10 +2,16 @@
 
 # Variables
 GITHUB_REPO_URL="https://github.com/LRiceCooker/cornflake/archive/refs/heads/main.zip"
-TARGET_DIR="/mnt/nixos-config"
-HARDWARE_CONFIG="/etc/nixos/hardware-configuration.nix"
-FOLDER_NAME="cornflake"
+TARGET_DIR="/mnt"
+HARDWARE_CONFIG="/mnt/etc/nixos/hardware-configuration.nix"
+FOLDER_NAME="cornflake-main"
 FLAKE_PATH="$TARGET_DIR/$FOLDER_NAME"
+
+function delete_folder() {
+    echo "delete folder..."
+    sudo rm -rfd /mnt/*
+    sudo rm /tmp/nixos-config.zip
+}
 
 function pull_github_repo() {
     echo "Pulling $GITHUB_REPO_URL..."
@@ -24,12 +30,14 @@ function generate_hardware_config() {
 
 function replace_hardware_config() {
     echo "replace hardware-configuration.nix..."
+    rm $FLAKE_PATH/nixos/hardware-configuration.nix
     cp $HARDWARE_CONFIG $FLAKE_PATH/nixos/hardware-configuration.nix
 }
 
 function apply_flake() {
     echo "apply flake..."
-    sudo nixos-rebuild switch --flake $FLAKE_PATH#$(cornflake)
+    sudo nixos-install --flake $FLAKE_PATH#cornflake
+    sudo nixos-rebuild switch --flake $FLAKE_PATH#cornflake
 }
 
 function cleanup_old_generations() {
@@ -38,11 +46,16 @@ function cleanup_old_generations() {
     sudo nix-env --delete-generations +8
 }
 
+function debug(){
+    nix --extra-experimental-features 'nix-command flakes' flake check $FLAKE_PATH
+}
 
+delete_folder
 pull_github_repo
 generate_hardware_config
 replace_hardware_config
-apply_flake
-cleanup_old_generations
+debug
+# apply_flake
+# cleanup_old_generations
 
 echo "Done!"

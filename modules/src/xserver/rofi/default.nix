@@ -14,5 +14,5 @@
     pkgs.rofi-emoji
     pkgs.rofi-systemd
     ];
-  }
+  };
 }

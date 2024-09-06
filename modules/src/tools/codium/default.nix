@@ -26,5 +26,5 @@
         dcasella.i3
     ];
     userSettings = builtins.readFile ./user.json;
-  }
+  };
 }
