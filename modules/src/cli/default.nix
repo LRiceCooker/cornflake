@@ -1,0 +1,9 @@
+{ ... }:
+
+{
+  imports = [
+    ./utils
+    ./mise
+    ./zsh
+  ];
+}

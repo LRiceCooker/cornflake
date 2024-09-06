@@ -1,0 +1,9 @@
+{ ... }:
+
+{
+  imports = [
+    ./alacritty
+    ./beekeeper
+    ./codium
+  ];
+}
